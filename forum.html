@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forum Diskusi</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Arial', sans-serif;
+    }
+    .phone-frame {
+      width: 360px;
+      height: 740px;
+      background: #fff;
+      border-radius: 40px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      background: #4E9CF0;
+      padding: 20px;
+      color: white;
+      text-align: center;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h3 {
+      margin: 0;
+    }
+    .clock {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .screen {
+      flex: 1;
+      background: #FAF9FB;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .message {
+      background: white;
+      padding: 10px 15px;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      max-width: 75%;
+      word-wrap: break-word;
+      display: flex;
+      align-items: center;
+    }
+    .message.me {
+      background: #DCF8C6;
+      align-self: flex-end;
+      justify-content: flex-end;
+    }
+    .message.agus, .message.dhiya {
+      background: #FFD166;
+      align-self: flex-start;
+      justify-content: flex-start;
+    }
+    .profile-pic {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+    .message .content {
+      max-width: 80%;
+    }
+    .typing-indicator {
+      font-style: italic;
+      color: #4E9CF0;
+    }
+    .input-area {
+      display: flex;
+      border-top: 1px solid #ccc;
+      padding: 10px;
+      background: #fff;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+    button {
+      background: #4E9CF0;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 20px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone-frame">
+    <div class="header">
+      <h3>Forum Diskusi</h3>
+      <div class="clock" id="clock"></div>
+    </div>
+
+    <div class="screen" id="chatBox"></div>
+
+    <div class="input-area">
+      <input type="text" id="messageInput" placeholder="Ketik pesan...">
+      <button onclick="sendMessage()">Kirim</button>
+    </div>
+  </div>
+
+  <script>
+    // Jam
+    function updateClock() {
+      const clock = document.getElementById("clock");
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      clock.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+    setInterval(updateClock, 1000);
+
+    // Fungsi untuk mengirim pesan
+    function sendMessage() {
+      const input = document.getElementById("messageInput");
+      const message = input.value.trim();
+      if (message === "") return;
+
+      const chatBox = document.getElementById("chatBox");
+
+      // Tampilkan pesan user
+      const myMsg = document.createElement("div");
+      myMsg.className = "message me";
+      myMsg.innerHTML = `<img src="https://www.w3schools.com/w3images/avatar2.png" class="profile-pic"> <div class="content">Fathan: ${message}</div>`;
+      chatBox.appendChild(myMsg);
+
+      // Tampilkan indikator ngetik dari Agus
+      const typingIndicatorAgus = document.createElement("div");
+      typingIndicatorAgus.className = "message";
+      typingIndicatorAgus.innerHTML = `<div class="content typing-indicator">Agus sedang mengetik...</div>`;
+      chatBox.appendChild(typingIndicatorAgus);
+
+      // Tampilkan indikator ngetik dari Dhiyauddin
+      const typingIndicatorDhiya = document.createElement("div");
+      typingIndicatorDhiya.className = "message";
+      typingIndicatorDhiya.innerHTML = `<div class="content typing-indicator">Dhiyauddin sedang mengetik...</div>`;
+      chatBox.appendChild(typingIndicatorDhiya);
+
+      // Scroll ke bawah
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Setelah beberapa detik, hapus indikator ngetik dan tampilkan balasan Agus & Dhiyauddin
+      setTimeout(() => {
+        typingIndicatorAgus.remove();
+        typingIndicatorDhiya.remove();
+
+        // Logika balasan bot berdasarkan input pengguna
+        const balasanBot = getBotResponse(message);
+
+        // Agus
+        const msgAgus = document.createElement("div");
+        msgAgus.className = "message agus";
+        msgAgus.innerHTML = `<img src="https://www.w3schools.com/w3images/avatar2.png" class="profile-pic"> <div class="content">Agus: ${balasanBot}</div>`;
+        chatBox.appendChild(msgAgus);
+
+        // Dhiyauddin
+        const msgDhiya = document.createElement("div");
+        msgDhiya.className = "message dhiya";
+        msgDhiya.innerHTML = `<img src="https://www.w3schools.com/w3images/avatar2.png" class="profile-pic"> <div class="content">Dhiyauddin: ${balasanBot}</div>`;
+        chatBox.appendChild(msgDhiya);
+
+        // Scroll ke bawah lagi setelah bot selesai mengetik
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 2000); // Bot ngetik selama 2 detik
+       
+      // Kosongin input
+      input.value = "";
+    }
+
+    // Fungsi untuk mendapatkan balasan bot berdasarkan pesan
+    function getBotResponse(message) {
+      const lowerMessage = message.toLowerCase();
+
+      if (lowerMessage.includes("halo") || lowerMessage.includes("hi")) {
+        return "Halo Fathan, ada yang bisa saya bantu?";
+      } else if (lowerMessage.includes("mikrotik")) {
+        return "Mikrotik? Bisa jelaskan lebih detail apa yang kamu butuhkan?";
+      } else if (lowerMessage.includes("tugas")) {
+        return "Tugasnya masih ada waktu, semoga bisa diselesaikan dengan baik!";
+      } else if (lowerMessage.includes("jam")) {
+        return "Saat ini jam " + new Date().toLocaleTimeString();
+      } else {
+        return "Maaf, saya tidak mengerti. Bisa jelaskan lebih lanjut?";
+      }
+    }
+  </script>
+
+</body>
+</html>

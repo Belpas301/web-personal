@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hallo, Fathan Arrayan</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #E6E6FA;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-frame {
+      background: linear-gradient(145deg, #7B61FF, #5D44D0);
+      border: 10px solid #333;
+      border-radius: 35px;
+      max-width: 375px;
+      width: 100%;
+      height: 700px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 15px;
+      font-size: 24px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      padding-top: 30px;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .header img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+
+    .chat-bubble {
+      background-color: #D9D9D9;
+      color: #333;
+      padding: 10px 15px;
+      border-radius: 20px;
+      max-width: 250px;
+      font-size: 13px;
+      margin: 20px;
+    }
+
+    .content {
+      padding: 0 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .content h3 {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .content img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .content p {
+      font-size: 12px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 15px;
+      background-color: #fff;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 30px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .send-button {
+      background-color: #7B61FF;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 18px;
+      margin-left: 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .footer-nav {
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+      background-color: #fff;
+    }
+
+    .navitem {
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .ai-response {
+      background-color: #7B61FF;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 20px;
+      max-width: 250px;
+      font-size: 13px;
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="phone-frame">
+    <a href="#" class="back-button">←</a>
+
+    <div class="header">
+      <h1>Hallo,<br> Fathan Arrayan</h1>
+      <img src="k.jpg" alt="Profile">
+    </div>
+
+    <div class="chat-bubble">berikan saya codingan dasar html</div>
+
+    <div class="content" id="chat-content">
+      <h3>Berikut adalah contoh sederhana dari kode HTML untuk membuat halaman web dasar:</h3>
+      <img src="code.png" alt="Kode HTML">
+      <p>
+        Penjelasan:<br>
+        • &lt;!DOCTYPE html&gt; → Menyatakan bahwa ini adalah dokumen HTML5.<br>
+        • &lt;html lang="id"&gt; → Tag HTML utama yang menentukan bahasa dokumen.<br>
+        • &lt;meta charset="UTF-8"&gt; → Mengatur encoding karakter menjadi UTF-8.<br>
+        • Struktur halaman terdiri dari bagian &lt;header&gt;, &lt;body&gt;, dan lain-lain.
+      </p>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Kirim Pesan Ke AI" onkeydown="checkEnter(event)">
+      <button class="send-button" onclick="sendMessage()">➤</button>
+    </div>
+
+    <div class="footer-nav">
+      <div class="navitem">🏠</div>
+      <div class="navitem">👤</div>
+      <div class="navitem">ℹ️</div>
+    </div>
+  </div>
+
+  <script>
+    function sendMessage() {
+      let userInput = document.getElementById('user-input').value;
+      if (userInput.trim() !== "") {
+        displayUserMessage(userInput);
+        displayAIResponse(userInput);
+        document.getElementById('user-input').value = ''; // Clear input field
+      }
+    }
+
+    function displayUserMessage(message) {
+      const chatContent = document.getElementById('chat-content');
+      const userMessage = document.createElement('div');
+      userMessage.classList.add('chat-bubble');
+      userMessage.textContent = message;
+      chatContent.appendChild(userMessage);
+      chatContent.scrollTop = chatContent.scrollHeight; // Scroll to the latest message
+    }
+
+    function displayAIResponse(userMessage) {
+      const chatContent = document.getElementById('chat-content');
+      const aiMessage = document.createElement('div');
+      aiMessage.classList.add('ai-response');
+
+      // Basic AI response (can be customized for actual AI logic)
+      let response = '';
+
+      // Logic to provide answers based on user input
+      if (userMessage.toLowerCase().includes("html")) {
+        response = "HTML adalah bahasa markah yang digunakan untuk membuat struktur halaman web.";
+      } else if (userMessage.toLowerCase().includes("css")) {
+        response = "CSS digunakan untuk mendesain tampilan halaman web, seperti warna, ukuran, dan tata letak.";
+      } else if (userMessage.toLowerCase().includes("javascript")) {
+        response = "JavaScript adalah bahasa pemrograman yang digunakan untuk menambah interaksi pada halaman web.";
+      } else {
+        response = "Maaf, saya tidak mengerti pertanyaan Anda. Coba tanya yang lain!";
+      }
+
+      aiMessage.textContent = response;
+
+      chatContent.appendChild(aiMessage);
+      chatContent.scrollTop = chatContent.scrollHeight; // Scroll to the latest message
+    }
+
+    function checkEnter(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+  </script>
+
+</body>
+</html>

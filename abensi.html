@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Absensi Siswa Mobile</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #eaf0ff;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    .phone-frame {
+      max-width: 480px;
+      margin: 20px auto;
+      padding: 10px;
+      border: 5px solid #2e3f6e;
+      border-radius: 30px;
+      background: #eaf0ff;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .header {
+      background: #2e3f6e;
+      color: white;
+      padding: 15px;
+      border-radius: 0 0 25px 25px;
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .header p {
+      margin: 5px 0 0;
+      font-size: 12px;
+    }
+    .absen-container {
+      padding: 10px 10px;
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: 40px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #2e3f6e;
+      flex-grow: 1;
+    }
+    .card .absen-options {
+      display: flex;
+      gap: 8px;
+      font-size: 10px;
+      color: #2e3f6e;
+    }
+    .card .absen-options label {
+      display: flex;
+      align-items: center;
+    }
+    input[type="radio"] {
+      transform: scale(1.2);
+      margin-right: 5px;
+    }
+    .absen-number {
+      background-color: #2e3f6e;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .confirm-button {
+      background-color: #5C6BC0;
+      color: white;
+      font-size: 14px;
+      padding: 6px 20px;
+      border: none;
+      border-radius: 20px;
+      width: auto;
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: bold;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      transition: all 0.3s ease;
+    }
+    .confirm-button:hover {
+      background-color: #3f4b8b;
+      transform: scale(1.05);
+    }
+    .confirm-button:active {
+      background-color: #2d3d6b;
+      transform: scale(1);
+    }
+    .navbar-container {
+      max-width: 480px;
+      margin: 0 auto;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    .navbar {
+      background: #2e3f6e;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-radius: 20px 20px 0 0;
+    }
+    .navitem {
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .success-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 128, 0, 0.8);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone-frame">
+
+    <div class="header">
+      <h1>Absensi Siswa</h1>
+      <p>XI TJKT | Hari Ini</p>
+    </div>
+
+    <div class="absen-container">
+
+      <!-- Daftar siswa -->
+      <div class="card">
+        <div class="absen-number">1</div>
+        <h3>Fathan Arrayan</h3>
+        <div class="absen-options">
+          <label><input type="radio" name="status1"> Hadir</label>
+          <label><input type="radio" name="status1"> Sakit</label>
+          <label><input type="radio" name="status1"> Izin</label>
+          <label><input type="radio" name="status1"> Alfa</label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="absen-number">2</div>
+        <h3>Agus Setiawan</h3>
+        <div class="absen-options">
+          <label><input type="radio" name="status2"> Hadir</label>
+          <label><input type="radio" name="status2"> Sakit</label>
+          <label><input type="radio" name="status2"> Izin</label>
+          <label><input type="radio" name="status2"> Alfa</label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="absen-number">3</div>
+        <h3>Muhamad Dhiyaudin</h3>
+        <div class="absen-options">
+            <label><input type="radio" name="status3" class="hadir"> Hadir</label>
+            <label><input type="radio" name="status3" class="sakit"> Sakit</label>
+            <label><input type="radio" name="status3" class="izin"> Izin</label>
+            <label><input type="radio" name="status3" class="alfa"> Alfa</label>
+        </div>
+      </div>
+  
+      <div class="card">
+        <div class="absen-number">4</div>
+        <h3>Axel Damara</h3>
+        <div class="absen-options">
+            <label><input type="radio" name="status4" class="hadir"> Hadir</label>
+            <label><input type="radio" name="status4" class="sakit"> Sakit</label>
+            <label><input type="radio" name="status4" class="izin"> Izin</label>
+            <label><input type="radio" name="status4" class="alfa"> Alfa</label>
+        </div>
+      </div>
+  
+      <div class="card">
+        <div class="absen-number">5</div>
+        <h3>Reisiya Azrilia</h3>
+        <div class="absen-options">
+            <label><input type="radio" name="status5" class="hadir"> Hadir</label>
+            <label><input type="radio" name="status5" class="sakit"> Sakit</label>
+            <label><input type="radio" name="status5" class="izin"> Izin</label>
+            <label><input type="radio" name="status5" class="alfa"> Alfa</label>
+        </div>
+      </div>
+  
+      <div class="card">
+        <div class="absen-number">6</div>
+        <h3>Rachma Palupi Ramadhani</h3>
+        <div class="absen-options">
+            <label><input type="radio" name="status6" class="hadir"> Hadir</label>
+            <label><input type="radio" name="status6" class="sakit"> Sakit</label>
+            <label><input type="radio" name="status6" class="izin"> Izin</label>
+            <label><input type="radio" name="status6" class="alfa"> Alfa</label>
+        </div>
+      </div>
+  
+      <div class="card">
+        <div class="absen-number">7</div>
+        <h3>Rara Aulia Ramadhani</h3>
+        <div class="absen-options">
+            <label><input type="radio" name="status7" class="hadir"> Hadir</label>
+            <label><input type="radio" name="status7" class="sakit"> Sakit</label>
+            <label><input type="radio" name="status7" class="izin"> Izin</label>
+            <label><input type="radio" name="status7" class="alfa"> Alfa</label>
+        </div>
+      </div>
+  
+      <div class="card">
+        <div class="absen-number">8</div>
+        <h3>Dinda Safitri</h3>
+        <div class="absen-options">
+            <label><input type="radio" name="status8" class="hadir"> Hadir</label>
+            <label><input type="radio" name="status8" class="sakit"> Sakit</label>
+            <label><input type="radio" name="status8" class="izin"> Izin</label>
+            <label><input type="radio" name="status8" class="alfa"> Alfa</label>
+        </div>
+      </div>
+  
+      <div class="card">
+        <div class="absen-number">9</div>
+        <h3>Yariza Nafisha Hamzah</h3>
+        <div class="absen-options">
+            <label><input type="radio" name="status9" class="hadir"> Hadir</label>
+            <label><input type="radio" name="status9" class="sakit"> Sakit</label>
+            <label><input type="radio" name="status9" class="izin"> Izin</label>
+            <label><input type="radio" name="status9" class="alfa"> Alfa</label>
+        </div>
+      </div>
+  
+      <div class="card">
+        <div class="absen-number">10</div>
+        <h3>Jihan Maulida</h3>
+        <div class="absen-options">
+            <label><input type="radio" name="status10" class="hadir"> Hadir</label>
+            <label><input type="radio" name="status10" class="sakit"> Sakit</label>
+            <label><input type="radio" name="status10" class="izin"> Izin</label>
+            <label><input type="radio" name="status10" class="alfa"> Alfa</label>
+        </div>
+      </div>
+
+      <!-- lanjut siswa ke-3 sampai ke-10 seperti contoh -->
+
+      <!-- Tombol Konfirmasi -->
+      <button class="confirm-button" onclick="confirmAbsensi()">Konfirmasi Absensi</button>
+
+    </div>
+
+    <div class="navbar-container">
+      <div class="navbar">
+        <div class="navitem">🏠</div>
+        <div class="navitem">👤</div>
+        <div class="navitem">ℹ️</div>
+      </div>
+    </div>
+
+    <div id="successMessage" class="success-message">
+      Absensi Berhasil!
+    </div>
+
+  </div>
+
+  <script>
+    function confirmAbsensi() {
+      var statusSiswa = [];
+      var siswaStatus = document.querySelectorAll('.card');
+
+      siswaStatus.forEach(function(card, index) {
+        var namaSiswa = card.querySelector('h3').textContent;
+        var status = '';
+
+        if (card.querySelector('input[name="status' + (index + 1) + '"]:checked')) {
+          status = card.querySelector('input[name="status' + (index + 1) + '"]:checked').parentElement.textContent.trim();
+        }
+
+        if (status) {
+          statusSiswa.push(namaSiswa + ' - ' + status);
+        }
+      });
+
+      if (statusSiswa.length > 0) {
+        var existingNotifikasi = JSON.parse(localStorage.getItem('notifikasiAbsensi')) || [];
+        existingNotifikasi.push(...statusSiswa);
+        localStorage.setItem('notifikasiAbsensi', JSON.stringify(existingNotifikasi));
+
+        var successMessage = document.getElementById('successMessage');
+        successMessage.textContent = 'Absensi Berhasil!\n' + statusSiswa.join('\n');
+        successMessage.style.display = 'block';
+        setTimeout(function() {
+          successMessage.style.display = 'none';
+        }, 3000);
+      } else {
+        alert('Tidak ada siswa yang terkonfirmasi!');
+      }
+    }
+  </script>
+
+</body>
+</html>

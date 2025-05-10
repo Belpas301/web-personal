@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard XI TJKT</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    /* Frame HP */
+    .phone-frame {
+      width: 390px;
+      height: 750px; /* Adjusted height */
+      max-width: 100%;
+      background: linear-gradient(to bottom, #e0e0f8, #b3b3cc);
+      border: 8px solid #333;
+      border-radius: 35px;
+      padding: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow-y: hidden; /* Disable vertical scrolling */
+      overflow-x: hidden; /* Disable horizontal scrolling */
+    }
+
+    .phone-frame::before {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 5px;
+      background: #333;
+      border-radius: 3px;
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      width: 80%;
+      max-width: 500px;
+      border: 1px solid #ccc;
+    }
+
+    .anime-image {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
+    }
+
+    .modal h2 {
+      font-size: 22px;
+      color: #333;
+      margin: 8px 0;
+    }
+
+    .modal .welcome {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .modal .fathan {
+      font-size: 22px;
+      color: #555;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Container Styles */
+    .container {
+      border: 1px solid #ccc;
+      padding: 15px;
+    }
+
+    .header {
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+
+    .profile {
+      border: 1px solid #ccc;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+    }
+
+    .box {
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 6px;
+    }
+
+    .box .judul {
+      font-weight: bold;
+    }
+
+    .menu {
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin-top: 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .item {
+      text-align: center;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+    }
+
+    .navbar {
+      border: 1px solid #ccc;
+      padding: 8px;
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .navitem {
+      padding: 8px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Notifikasi Styles */
+    .notif-wrapper {
+      position: relative;
+    }
+
+    .notif-dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 250px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .notif-dropdown .notif-item {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* Time and Notification */
+    #time {
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone-frame">
+    <div class="container">
+      <!-- Modal Popup -->
+      <div id="welcomeModal" class="modal">
+        <div id="loaderBox" class="loader-box">
+          <div class="loader-circle"></div>
+        </div>
+        <div id="modalContent" class="modal-content">
+          <span class="close">&times;</span>
+          <img src="anime.png" alt="Anime Character" class="anime-image">
+          <h2 class="welcome">Welcome</h2>
+          <h2 class="fathan">Fathan Arrayan</h2>
+        </div>
+      </div>
+
+      <div class="header">
+        <span id="time">19:02</span>
+        <div class="notif-wrapper">
+          <div class="navitem" onclick="tampilkanNotifikasi()">🔔</div>
+
+          <div id="notifContainer" style="display:none; position:fixed; top:60px; right:20px; background:white; border:1px solid #ccc; padding:10px; border-radius:8px; max-width:300px; box-shadow:0 2px 5px rgba(0,0,0,0.2); z-index:999;">
+            <h4>Notifikasi Absensi</h4>
+            <div id="notifList"></div>
+            <button onclick="hapusNotifikasi()" style="margin-top:10px; padding:5px 10px; background:#e74c3c; color:white; border:none; border-radius:4px; cursor:pointer;">Hapus Semua</button>
+          </div>
+          
+          <!-- Notifikasi Dropdown -->
+          <div class="notif-dropdown" id="notifDropdown">
+            <h4>Notifikasi</h4>
+            <div class="notif-item">📅 Jadwal Ujian Besok 08.00</div>
+            <div class="notif-item">📝 Deadline Tugas Hari Ini</div>
+            <div class="notif-item">📣 Info Rapat Jam 13.00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile">
+        <img src="k.jpg" alt="avatar" class="avatar">
+        <div class="text">
+          <h3>Welcome,<br><span>FATHAN ARRAYAN</span></h3>
+          <p>XI Teknik Jaringan Komputer dan Telekomunikasi</p>
+        </div>
+      </div>
+
+      <div class="box hadir">
+        <p class="judul">Kehadiran Hari Ini</p>
+        <p class="isi">Hari ini kamu masuk sekolah.</p>
+      </div>
+
+      <div class="box motivasi">
+        <p class="judul">Motivasi Hari Ini</p>
+        <p class="isi">Jangan Biarkan Kegagalan Kemarin Menghambat Langkah Hari Ini</p>
+        <p class="isi">"Don't Let Yesterday's Failure Hold Back Today's Steps"</p>
+      </div>
+
+      <div class="box pengumuman">
+        <p class="judul">📢 PENGUMUMAN</p>
+        <p class="isi">Sumatif Tengah Semester</p>
+        <h2>23-9-24</h2>
+      </div>
+
+      <div class="box menu">
+        <p class="judul">MENU</p>
+        <div class="grid">
+          <a href="kalender.html" class="item">📆<br>Kalender Jurusan</a>
+          <a href="abensi.html" class="item">📝<br>Absensi</a>
+          <a href="tanyaai.html" class="item">⚖️<br>Tanya AI</a>        
+          <a href="modul.html" class="item">📚<br>Modul</a>
+          <a href="forum.html" class="item">💬<br>Forum Diskusi</a>
+          <div class="item">📝<br>Quiz</div>
+          <div class="item">👨‍🏫<br>Tanya Guru</div>
+          <div class="item">🛠️<br>Tools</div>
+        </div>
+      </div>
+
+      <div class="navbar">
+        <div class="navitem">🏠</div>
+        <div class="navitem">👤</div>
+        <div class="navitem">ℹ️</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Show the modal when the page loads
+    window.onload = function() {
+      var modal = document.getElementById("welcomeModal");
+      var closeBtn = document.getElementsByClassName("close")[0];
+
+      // Show modal
+      modal.style.display = "flex";
+
+      // Close modal when the user clicks the close button
+      closeBtn.onclick = function() {
+        modal.style.display = "none";
+      }
+
+      // Close modal if the user clicks anywhere outside of the modal
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    };
+
+    // Function buat update jam realtime
+    function updateTime() {
+      const timeElement = document.getElementById("time");
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, "0");
+      const minutes = now.getMinutes().toString().padStart(2, "0");
+      const seconds = now.getSeconds().toString().padStart(2, "0");
+      timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    // Update setiap detik
+    setInterval(updateTime, 1000);
+
+    // Set waktu awal saat halaman load
+    updateTime();
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
